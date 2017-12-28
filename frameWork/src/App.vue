@@ -1,12 +1,13 @@
 <template lang="pug">
   #app
-    count
+    //- count
+    <router-view></router-view>
 </template>
 
 <script>
-  import count from '@/view/components/count'
+  // import count from '@/view/components/count'
 export default {
-    components: {count}
+    // components: {count}
 }
 </script>
 
