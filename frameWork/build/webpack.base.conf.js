@@ -3,6 +3,10 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const ExtractText
+      = require('extract-text-webpack-plugin')
+
+const NODE_ENV  = process.env.NODE_ENV
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -52,6 +56,27 @@ module.exports = {
         include: [resolve('src'), resolve('test')]
       },
       {
+        test: /\.scss$/,
+        use: ExtractText.extract({
+          fallback: 'style-loader',
+          use: [{
+            loader: 'css-loader',
+            options: {
+              minimize: NODE_ENV !== 'development'
+            }
+          }, {
+            loader: 'postcss-loader',
+            options: {
+              config: {
+                path: './build/postcss.config.js'
+              }
+            }
+          }, {
+            loader: 'sass-loader'
+          }]
+        })
+      },
+      {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
@@ -88,5 +113,11 @@ module.exports = {
     net: 'empty',
     tls: 'empty',
     child_process: 'empty'
-  }
+  },
+  plugins: [
+    new ExtractText({
+      filename: '[name].[contenthash:7].css',
+      disable: NODE_ENV === 'development'
+    })
+  ]
 }
