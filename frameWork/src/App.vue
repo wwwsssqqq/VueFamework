@@ -1,10 +1,12 @@
-<template>
-  <div id="app">
-  </div>
+<template lang="pug">
+  #app
+    count
 </template>
 
 <script>
+  import count from '@/view/components/count'
 export default {
+    components: {count}
 }
 </script>
 
